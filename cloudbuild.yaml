@@ -1,15 +1,28 @@
 logsBucket: gs://costco-udp-bigquery-logs
 steps:
-  - name: 'gcr.io/cloud-builders/bq'  # Use the official Google Cloud Build bq image
+  # Step to create the table and insert records
+  - name: 'gcr.io/cloud-builders/bq'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        bq query --use_legacy_sql=false < scripts/create_tables.sql
+        # Create a BigQuery dataset (if it doesn't exist)
+        bq mk --if-not-exists my_dataset
 
-  - name: 'gcr.io/cloud-builders/bq'  # Reusing the bq image for the second step
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        bq query --use_legacy_sql=false < scripts/insert_data.sql
+        # Create the BigQuery table
+        bq mk --table my_dataset.my_table id:INTEGER,name:STRING,age:INTEGER
+
+        # Insert 10 records into the table
+        bq query --use_legacy_sql=false '
+          INSERT INTO my_dataset.my_table (id, name, age) VALUES
+          (1, "Alice", 30),
+          (2, "Bob", 25),
+          (3, "Charlie", 28),
+          (4, "Diana", 22),
+          (5, "Ethan", 35),
+          (6, "Fiona", 27),
+          (7, "George", 29),
+          (8, "Hannah", 32),
+          (9, "Ian", 26),
+          (10, "Jane", 31)
+        '
