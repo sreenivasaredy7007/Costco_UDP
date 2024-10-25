@@ -7,7 +7,7 @@ steps:
       - |
         bq query --use_legacy_sql=false < scripts/create_tables.sql
 
-  - name: 'gcr.io/costco-udp/gcloud'
+  - name: 'gcr.io/us-central1-docker.pkg.dev/costco-udp/costco-udp-image'
     entrypoint: 'bash'
     args:
       - '-c'
