@@ -6,7 +6,7 @@
 #       - '-c'
 #       - |
 #         # Run SQL commands from the script to create table and insert data
-#         bq query --use_legacy_sql=false < Costco_UDP/scripts/create_table_and_insert.sql
+#         bq query --use_legacy_sql=false < /scripts/create_table_and_insert.sql
 
 # # Optional: Specify logs bucket
 # logsBucket: gs://costco-udp-bigquery-logs
