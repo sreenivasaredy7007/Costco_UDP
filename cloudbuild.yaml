@@ -1,12 +1,35 @@
+# steps:
+#   # Step to create the dataset and table, and insert records
+#   - name: 'gcr.io/cloud-builders/bq'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         # Run SQL commands from the script to create table and insert data
+#         bq query --use_legacy_sql=false < Costco_UDP/scripts/create_table_and_insert.sql
+
+# # Optional: Specify logs bucket
+# logsBucket: gs://costco-udp-bigquery-logs
+
 steps:
-  # Step to create the dataset and table, and insert records
-  - name: 'gcr.io/cloud-builders/bq'
-    entrypoint: 'bash'
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
     args:
-      - '-c'
-      - |
-        # Run SQL commands from the script to create table and insert data
-        bq query --use_legacy_sql=false < Costco_UDP/scripts/create_table_and_insert.sql
+      - 'build'
+      - '-t'
+      - 'costco-udp-bigquery'  # Tag for your Docker image
+      - '.'  # Context is the current directory
+
+  # Step 2: Run the Docker container
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'run'
+      - '--rm'
+      - '-v'
+      - '/path/to/your/service-account.json:/key.json'  # Mount the service account key
+      - '-e'
+      - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
+      - 'costco-udp-bigquery'  # Name of the Docker image to run
 
 # Optional: Specify logs bucket
 logsBucket: gs://costco-udp-bigquery-logs
