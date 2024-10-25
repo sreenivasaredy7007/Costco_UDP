@@ -5,7 +5,8 @@ FROM google/cloud-sdk:latest
 WORKDIR /app
 
 # Copy the SQL script from the host machine to the container
-COPY Costco_UDP/scripts/create_table_and_insert.sql ./scripts/create_table_and_insert.sql
+# COPY Costco_UDP/scripts/create_table_and_insert.sql ./scripts/create_table_and_insert.sql
+COPY ./scripts/create_table_and_insert.sql /app/scripts/create_table_and_insert.sql
 
 # Ensure that bash is available (it's included in the Google Cloud SDK image)
 RUN apt-get update && apt-get install -y bash
