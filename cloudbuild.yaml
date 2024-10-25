@@ -12,3 +12,6 @@ steps:
   - '-c'
   - |
     bq query --use_legacy_sql=false < scripts/insert_data.sql
+
+options:
+  logs_bucket: gs://costco-udp-bigquery-logs
