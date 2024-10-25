@@ -9,4 +9,4 @@ steps:
         bq query --use_legacy_sql=false < Costco_UDP/scripts/create_table_and_insert.sql
 
 # Optional: Specify logs bucket
-# logsBucket: gs://your-log-bucket
+logsBucket: gs://costco-udp-bigquery-logs
