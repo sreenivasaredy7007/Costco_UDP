@@ -1,16 +1,15 @@
 logsBucket: gs://costco-udp-bigquery-logs
 steps:
-  - name: 'gcr.io/us-central1-docker.pkg.dev/costco-udp/costco-udp-image'
+  - name: 'us-central1-docker.pkg.dev/costco-udp/costco-udp/costco-udp-image:latest'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         bq query --use_legacy_sql=false < scripts/create_tables.sql
 
-  - name: 'gcr.io/us-central1-docker.pkg.dev/costco-udp/costco-udp-image'
+  - name: 'us-central1-docker.pkg.dev/costco-udp/costco-udp/costco-udp-image:latest'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         bq query --use_legacy_sql=false < scripts/insert_data.sql
-
