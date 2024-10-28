@@ -22,36 +22,43 @@
 
 # # Optional: Specify logs bucket
 # logsBucket: gs://costco-udp-bigquery-logs
-
+#--------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
 
 steps:
-  # Step 1: Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'  # Use Cloud Build's Docker builder
+  # Step 1: Download the service account key from GCS
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
+
+  # Step 2: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
-      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'  # Fully qualified image path with tag
-      - '.'  # Context is the current directory where Dockerfile is located
+      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
+      - '.'
 
-  # Step 2: Run the Docker container
-  - name: 'gcr.io/cloud-builders/docker'  # Use Cloud Build's Docker builder to run the image
+  # Step 3: Authenticate and run the Docker container with BigQuery access
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'run'
       - '--rm'
       - '-v'
-      - '/path/to/your/service-account.json:/key.json'  # Update with actual path to your service account key
+      - '/workspace/key.json:/key.json'  # Mount the key file inside the container
       - '-e'
       - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
-      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'  # Use the full path with tag to run the image
+      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
       - 'bash'
       - '-c'
       - |
         gcloud auth activate-service-account --key-file=/key.json && \
         bq query --use_legacy_sql=false < Costco_UDP/scripts/create_table_and_insert.sql
 
-
-# Specify logs bucket
+# Optional: Specify logs bucket
 logsBucket: gs://costco-udp-bigquery-logs
