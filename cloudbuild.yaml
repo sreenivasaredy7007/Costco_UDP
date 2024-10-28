@@ -1,37 +1,51 @@
 # steps:
-#   # Step to create the dataset and table, and insert records
-#   - name: 'gcr.io/cloud-builders/bq'
-#     entrypoint: 'bash'
+#   # Step 1: Build the Docker image
+#   - name: 'us-central1-docker.pkg.dev/costco-udp/costo-udp'
 #     args:
-#       - '-c'
-#       - |
-#         # Run SQL commands from the script to create table and insert data
-#         bq query --use_legacy_sql=false < /scripts/create_table_and_insert.sql
+#       - 'build'
+#       - '-t'
+#       - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
+#       - 'costco-udp-bigquery'  # Tag for your Docker image
+#       - '.'  # Context is the current directory
+
+#   # Step 2: Run the Docker container
+#   - name: 'us-central1-docker.pkg.dev/costco-udp/costo-udp'
+#     args:
+#       - 'run'
+#       - '--rm'
+#       - '-v'
+#       - '/path/to/your/service-account.json:/key.json'  # Mount the service account key
+#       - '-e'
+#       - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
+#       - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
+#       - 'costco-udp-bigquery'  # Name of the Docker image to run
 
 # # Optional: Specify logs bucket
 # logsBucket: gs://costco-udp-bigquery-logs
 
+
+
+
+
 steps:
   # Step 1: Build the Docker image
-  - name: 'us-central1-docker.pkg.dev/costco-udp/costo-udp'
+  - name: 'gcr.io/cloud-builders/docker'  # Use Cloud Build's Docker builder
     args:
       - 'build'
       - '-t'
-      - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
-      - 'costco-udp-bigquery'  # Tag for your Docker image
-      - '.'  # Context is the current directory
+      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'  # Fully qualified image path with tag
+      - '.'  # Context is the current directory where Dockerfile is located
 
   # Step 2: Run the Docker container
-  - name: 'us-central1-docker.pkg.dev/costco-udp/costo-udp'
+  - name: 'gcr.io/cloud-builders/docker'  # Use Cloud Build's Docker builder to run the image
     args:
       - 'run'
       - '--rm'
       - '-v'
-      - '/path/to/your/service-account.json:/key.json'  # Mount the service account key
+      - '/path/to/your/service-account.json:/key.json'  # Update with actual path to your service account key
       - '-e'
       - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
-      - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
-      - 'costco-udp-bigquery'  # Name of the Docker image to run
+      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'  # Use the full path with tag to run the image
 
-# Optional: Specify logs bucket
+# Specify logs bucket
 logsBucket: gs://costco-udp-bigquery-logs
