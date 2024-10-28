@@ -17,7 +17,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'gcr.io/costco-udp/us-central1-docker.pkg.dev/costco-udp/costo-udp:latest'
+      - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
       - 'costco-udp-bigquery'  # Tag for your Docker image
       - '.'  # Context is the current directory
 
@@ -30,7 +30,7 @@ steps:
       - '/path/to/your/service-account.json:/key.json'  # Mount the service account key
       - '-e'
       - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
-      - 'gcr.io/costco-udp/us-central1-docker.pkg.dev/costco-udp/costo-udp:latest'
+      - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
       - 'costco-udp-bigquery'  # Name of the Docker image to run
 
 # Optional: Specify logs bucket
