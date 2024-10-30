@@ -1,32 +1,4 @@
-# steps:
-#   # Step 1: Build the Docker image
-#   - name: 'us-central1-docker.pkg.dev/costco-udp/costo-udp'
-#     args:
-#       - 'build'
-#       - '-t'
-#       - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
-#       - 'costco-udp-bigquery'  # Tag for your Docker image
-#       - '.'  # Context is the current directory
-
-#   # Step 2: Run the Docker container
-#   - name: 'us-central1-docker.pkg.dev/costco-udp/costo-udp'
-#     args:
-#       - 'run'
-#       - '--rm'
-#       - '-v'
-#       - '/path/to/your/service-account.json:/key.json'  # Mount the service account key
-#       - '-e'
-#       - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
-#       - 'us-central1-docker.pkg.dev/costo-udp/costo-udp/costo-udp-image:latest'
-#       - 'costco-udp-bigquery'  # Name of the Docker image to run
-
-# # Optional: Specify logs bucket
-# logsBucket: gs://costco-udp-bigquery-logs
-#--------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
+# Deployment
 steps:
   # Step 1: Download the service account key from GCS
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -59,5 +31,6 @@ steps:
       - |
         gcloud auth activate-service-account --key-file=/key.json && \
         bq query --project_id=costco-udp --use_legacy_sql=false < scripts/create_table_and_insert.sql
+        
 # Optional: Specify logs bucket
 logsBucket: gs://costco-udp-bigquery-logs
