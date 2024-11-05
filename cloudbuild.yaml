@@ -32,5 +32,5 @@ steps:
         gcloud auth activate-service-account --key-file=/key.json && \
         bq query --project_id=costco-udp --use_legacy_sql=false < scripts/create_table_and_insert.sql
         
-# Optional: Specify logs bucket
+# Optional: Specify log's bucket
 logsBucket: gs://costco-udp-bigquery-logs
