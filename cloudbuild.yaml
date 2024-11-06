@@ -14,7 +14,7 @@
 #         "dataflow", "jobs", "run", "my-dataflow-job",
 #         "--gcs-location", "gs://my-dataflow-staging-bucket/temp/template.json",
 #         "--region", "us-central1",
-#         "--staging-location", "gs://your-bucket/staging",
+#         #"--staging-location", "gs://your-bucket/staging",
 #         "--temp-location", "gs://my-dataflow-staging-bucket/temporary",
 #         "--parameters", "output_path=gs://my-dataflow-staging-bucket/dataflow-output-file"
 #       ]
@@ -39,8 +39,8 @@ steps:
         "dataflow", "jobs", "run", "my-dataflow-job",
         "--gcs-location=gs://my-dataflow-staging-bucket/temp/template.json",
         "--region=us-central1",
-        "--staging-location=gs://my-dataflow-staging-bucket/staging",
-        "--temp-location=gs://my-dataflow-staging-bucket/temporary",
+        #"--staging-location=gs://my-dataflow-staging-bucket/staging",
+        #"--temp-location=gs://my-dataflow-staging-bucket/temporary",
         "--parameters=output_path=gs://my-dataflow-staging-bucket/dataflow-output-file"
       ]
 
