@@ -1,12 +1,4 @@
 steps:
-  # # Step 1: Download the service account key from GCS
-  # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
-
   # Step 1: Set up Python environment and install dependencies
   - name: 'python:3.8'
     entrypoint: 'bash'
