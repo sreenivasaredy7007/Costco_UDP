@@ -1,36 +1,22 @@
-# Deployment
 steps:
-  # Step 1: Download the service account key from GCS
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  # Step 1: Set up Python environment and install dependencies
+  - name: 'python:3.8'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
+        pip install apache-beam[gcp]
 
-  # Step 2: Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
+  # Step 2: Run the Dataflow pipeline
+  - name: 'gcr.io/cloud-builders/gcloud'
     args:
-      - 'build'
-      - '-t'
-      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
-      - '.'
+      [
+        "dataflow", "jobs", "run", "my-dataflow-job",
+        "--gcs-location", "gs://my-dataflow-staging-bucket/temp/create_table_and_insert.sql",
+        "--region", "us-central1",
+        #"--staging-location", "gs://your-bucket/staging",
+        "--temp-location", "gs://my-dataflow-staging-bucket/temporary",
+        "--parameters", "output_path=gs://my-dataflow-staging-bucket/dataflow-output-file"
+      ]
 
-  # Step 3: Authenticate and run the Docker container with BigQuery access
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'run'
-      - '--rm'
-      - '-v'
-      - '/workspace/key.json:/key.json'  # Mount the key file inside the container
-      - '-e'
-      - 'GOOGLE_APPLICATION_CREDENTIALS=/key.json'
-      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
-      - 'bash'
-      - '-c'
-      - |
-        gcloud auth activate-service-account --key-file=/key.json && \
-        bq query --project_id=costco-udp --use_legacy_sql=false < scripts/create_table_and_insert.sql
-        
-# Optional: Specify log's bucket
-logsBucket: gs://costco-udp-bigquery-logs
+timeout: "1800s"  # Set an appropriate timeout for your pipeline
