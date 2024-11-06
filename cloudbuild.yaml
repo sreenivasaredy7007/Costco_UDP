@@ -1,3 +1,28 @@
+# steps:
+#   # Step 1: Set up Python environment and install dependencies
+#   - name: 'python:3.8'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         pip install apache-beam[gcp]
+
+#   # Step 2: Run the Dataflow pipeline
+#   - name: 'gcr.io/cloud-builders/gcloud'
+#     args:
+#       [
+#         "dataflow", "jobs", "run", "my-dataflow-job",
+#         "--gcs-location", "gs://my-dataflow-staging-bucket/temp/template.json",
+#         "--region", "us-central1",
+#         "--staging-location", "gs://your-bucket/staging",
+#         "--temp-location", "gs://my-dataflow-staging-bucket/temporary",
+#         "--parameters", "output_path=gs://my-dataflow-staging-bucket/dataflow-output-file"
+#       ]
+
+# timeout: "1800s"  # Set an appropriate timeout for your pipeline
+# options:
+#   logging: CLOUD_LOGGING_ONLY
+#----------------------------------------------------------------------------------------------------------------#
 steps:
   # Step 1: Set up Python environment and install dependencies
   - name: 'python:3.8'
@@ -12,13 +37,13 @@ steps:
     args:
       [
         "dataflow", "jobs", "run", "my-dataflow-job",
-        "--gcs-location", "gs://my-dataflow-staging-bucket/temp/template.json",
-        "--region", "us-central1",
-        "--staging-location", "gs://your-bucket/staging",
-        "--temp-location", "gs://my-dataflow-staging-bucket/temporary",
-        "--parameters", "output_path=gs://my-dataflow-staging-bucket/dataflow-output-file"
+        "--gcs-location=gs://my-dataflow-staging-bucket/temp/template.json",
+        "--region=us-central1",
+        "--staging-location=gs://my-dataflow-staging-bucket/staging",
+        "--temp-location=gs://my-dataflow-staging-bucket/temporary",
+        "--parameters=output_path=gs://my-dataflow-staging-bucket/dataflow-output-file"
       ]
 
-timeout: "1800s"  # Set an appropriate timeout for your pipeline
+timeout: "1800s"
 options:
   logging: CLOUD_LOGGING_ONLY
