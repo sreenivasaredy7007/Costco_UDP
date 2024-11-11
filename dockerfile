@@ -1,13 +1,14 @@
-# Use an official Debian image as a base
+# Use a lightweight base image
 FROM debian:latest
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y curl unzip gnupg software-properties-common
+    apt-get install -y curl gnupg software-properties-common
 
 # Install Google Cloud SDK
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+RUN mkdir -p /usr/share/keyrings && \
+    curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     apt-get update -y && \
     apt-get install -y google-cloud-sdk
 
