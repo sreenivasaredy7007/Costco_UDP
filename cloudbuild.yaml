@@ -1,5 +1,14 @@
+# Deployment
 steps:
-  # Step 1: Set up Google Cloud authentication
+  # Step 1: Download the service account key from GCS
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
+        
+  # Step 2: Set up Google Cloud authentication
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
@@ -8,13 +17,13 @@ steps:
         gcloud config set project ${_PROJECT_ID}
         gcloud auth application-default login
 
-  # Step 2: Set up Terraform
+  # Step 3: Set up Terraform
   - name: 'hashicorp/terraform:latest'
     args:
       - 'init'
       - '-input=false'
 
-  # Step 3: Run Terraform Plan
+  # Step 4: Run Terraform Plan
   - name: 'hashicorp/terraform:latest'
     args:
       - 'plan'
@@ -22,7 +31,7 @@ steps:
       - '-var=service_account_email=${_SERVICE_ACCOUNT_EMAIL}'
       - '-out=tfplan'
 
-  # Step 4: Run Terraform Apply
+  # Step 5: Run Terraform Apply
   - name: 'hashicorp/terraform:latest'
     args:
       - 'apply'
