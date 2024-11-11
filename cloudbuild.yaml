@@ -47,6 +47,7 @@ steps:
 substitutions:
   _PROJECT_ID: "costco-udp"
   _SERVICE_ACCOUNT_EMAIL: "your-service-account-email"
+  _TOPIC_NAME: "your-topic-name"  # Add this if topic_name is a variable
 
 # Specify a valid machine type
 options:
