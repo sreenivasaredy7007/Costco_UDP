@@ -33,7 +33,7 @@ substitutions:
   _PROJECT_ID: "costco-udp"
   _SERVICE_ACCOUNT_EMAIL: "your-service-account-email"
 
-# Optional: Control build options
+# Specify a valid machine type
 options:
   logging: CLOUD_LOGGING_ONLY
-  machineType: 'E2_SMALL'
+  machineType: 'E2_HIGHCPU_8'
