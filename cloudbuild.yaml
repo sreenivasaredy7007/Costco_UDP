@@ -35,6 +35,7 @@ steps:
       - 'plan'
       - '-var=project_id=${_PROJECT_ID}'
       - '-var=service_account_email=${_SERVICE_ACCOUNT_EMAIL}'
+      - '-var=topic_name=${_TOPIC_NAME}'
       - '-out=tfplan'
 
   # Step 5: Run Terraform Apply
@@ -46,8 +47,8 @@ steps:
 
 substitutions:
   _PROJECT_ID: "costco-udp"
-  _SERVICE_ACCOUNT_EMAIL: "your-service-account-email"
-  _TOPIC_NAME: "your-topic-name"  # Add this if topic_name is a variable
+  _SERVICE_ACCOUNT_EMAIL: "648323935885-compute@developer.gserviceaccount.com"
+  _TOPIC_NAME: "my-topic"  # Add this if topic_name is a variable
 
 # Specify a valid machine type
 options:
