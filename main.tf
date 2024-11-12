@@ -33,10 +33,21 @@ output "rendered_subscription" {
 }
 
 # Include resources using Terraform's `resource` blocks for actual deployment
+#resource "google_pubsub_topic" "topic" {
+#  name    = var.topic_name
+#  project = var.project_id
+#}
+
 resource "google_pubsub_topic" "topic" {
-  name    = var.topic_name
+  name = var.topic_name
   project = var.project_id
+
+  lifecycle {
+    prevent_destroy = true  # Prevents accidental deletion
+    ignore_changes = [name]  # Ignores changes if the resource already exists
+  }
 }
+
 
 resource "google_pubsub_subscription" "subscription" {
   name                 = var.subscription_name
