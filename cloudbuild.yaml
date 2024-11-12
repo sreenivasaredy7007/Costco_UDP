@@ -48,7 +48,7 @@ steps:
 substitutions:
   _PROJECT_ID: "costco-udp"
   _SERVICE_ACCOUNT_EMAIL: "648323935885-compute@developer.gserviceaccount.com"
-  _TOPIC_NAME: "my-topic-pubsub"  # Add this if topic_name is a variable
+  _TOPIC_NAME: "my-topic-pubsub-one"  # Add this if topic_name is a variable
 
 # Specify a valid machine type
 options:
