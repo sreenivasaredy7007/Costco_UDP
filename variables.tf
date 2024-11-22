@@ -38,3 +38,10 @@ variable "storage_class" {
   type        = string
   default     = "STANDARD"
 }
+
+variable "force_destroy" {
+  description = "Whether to force destroy the bucket"
+  type        = bool
+  default     = false
+}
+
