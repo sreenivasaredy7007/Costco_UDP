@@ -69,7 +69,7 @@ substitutions:
   _PROJECT_ID: "costco-udp"
   _SERVICE_ACCOUNT_EMAIL: "648323935885-compute@developer.gserviceaccount.com"
   _TOPIC_NAME: "pubsub--topic-one"  # Add this if topic_name is a variable
-  _BUCKET_NAME: "upd-stg1237007"
+  _BUCKET_NAME: "upd-stg12370078008"
   _LOCATION: "us-central1"
   _STORAGE_CLASS: "STANDARD"
   _FORCE_DESTROY: "false"
