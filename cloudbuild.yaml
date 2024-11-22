@@ -65,6 +65,13 @@ steps:
       - '-input=false'
       - 'bucket-tfplan'
 
+  - name: 'hashicorp/terraform:latest'
+    args:
+      - 'import'
+      - 'google_storage_bucket.bucket'
+      - '${_BUCKET_NAME}'
+
+
 substitutions:
   _PROJECT_ID: "costco-udp"
   _SERVICE_ACCOUNT_EMAIL: "648323935885-compute@developer.gserviceaccount.com"
