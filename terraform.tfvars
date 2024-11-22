@@ -1,5 +1,5 @@
 project_id   = "costco-udp"              
-bucket_name  = "upd-stg1237007"     
+bucket_name  = "upd-stg12370078008"     
 location     = "us-central1"
 storage_class = "STANDARD"
 #dataset_id = "my_dataset"
