@@ -72,7 +72,7 @@ substitutions:
   _BUCKET_NAME: "upd-stg1237007"
   _LOCATION: "us-central1"
   _STORAGE_CLASS: "STANDARD"
-  _FORCE_DESTROY: "false"
+  #_FORCE_DESTROY: "false"
 
 # Specify a valid machine type
 options:
