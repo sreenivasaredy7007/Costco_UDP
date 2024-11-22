@@ -23,24 +23,22 @@ variable "service_account_email" {
 
 # To Create a Google Cloud storage -
 variable "bucket_name" {
-  description = "upd-stg1237007"
+  description = "The name of the storage bucket"
   type        = string
 }
 
 variable "location" {
-  description = "Location of the bucket (e.g., US)"
+  description = "The location of the storage bucket"
   type        = string
-  default     = "us-central1"
 }
 
 variable "storage_class" {
-  description = "Storage class of the bucket (e.g., STANDARD)"
+  description = "The storage class of the bucket (e.g., STANDARD, NEARLINE)"
   type        = string
-  default     = "STANDARD"
 }
 
 variable "force_destroy" {
-  description = "Whether to force destroy the bucket"
+  description = "Whether to force destroy the bucket when it is deleted"
   type        = bool
   default     = false
 }
