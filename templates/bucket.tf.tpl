@@ -4,7 +4,7 @@ esource "google_storage_bucket" "bucket" {
   storage_class = "${storage_class}"
   force_destroy = "${force_destroy}"
 
-  lifecycle {
-    prevent_destroy = true  # Prevents accidental deletion
-  }
+#  lifecycle {
+#    prevent_destroy = true  # Prevents accidental deletion
+#  }
 }
