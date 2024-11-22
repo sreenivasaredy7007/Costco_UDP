@@ -64,7 +64,7 @@ data "template_file" "bucket_template" {
     bucket_name   = var.bucket_name
     location      = var.location
     storage_class = var.storage_class
-    force_destroy = var.force_destroy
+    #force_destroy = var.force_destroy
   }
 }
 
@@ -79,11 +79,11 @@ resource "google_storage_bucket" "bucket" {
   name          = var.bucket_name
   location      = var.location
   storage_class = var.storage_class
-  force_destroy = var.force_destroy
+  #force_destroy = var.force_destroy
 
-  lifecycle {
-    prevent_destroy = true
-  }
+#  lifecycle {
+#    prevent_destroy = true
+#  }
 }
 
 output "bucket_url" {
