@@ -48,10 +48,45 @@ resource "google_pubsub_topic" "topic" {
   }
 }
 
-
 resource "google_pubsub_subscription" "subscription" {
   name                 = var.subscription_name
   topic                = google_pubsub_topic.topic.id
   project              = var.project_id
   ack_deadline_seconds = 10
+}
+
+# To Create a Google Cloud Storage Creation.
+# Render the bucket template
+data "template_file" "bucket_template" {
+  template = file("${path.module}/templates/bucket.tf.tpl")
+
+  vars = {
+    bucket_name   = var.bucket_name
+    location      = var.location
+    storage_class = var.storage_class
+    force_destroy = var.force_destroy
+  }
+}
+
+# Output the rendered template for verification (optional)
+output "rendered_bucket_template" {
+  value = data.template_file.bucket_template.rendered
+}
+
+# Use the rendered template for creating the bucket
+resource "google_storage_bucket" "bucket" {
+  # Parsed values from template variables
+  name          = var.bucket_name
+  location      = var.location
+  storage_class = var.storage_class
+  force_destroy = var.force_destroy
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+output "bucket_url" {
+  value = "gs://${google_storage_bucket.bucket.name}"
+  description = "gs://upd-stg123/"
 }
