@@ -81,9 +81,9 @@ resource "google_storage_bucket" "bucket" {
   storage_class = var.storage_class
   #force_destroy = var.force_destroy
 
-#  lifecycle {
-#    prevent_destroy = true
-#  }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 output "bucket_url" {
