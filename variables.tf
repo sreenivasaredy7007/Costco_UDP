@@ -20,3 +20,21 @@ variable "service_account_email" {
   type        = string
   default     = ""  # You can set a default or pass it during apply
 }
+
+# To Create a Google Cloud storage -
+variable "bucket_name" {
+  description = "upd-stg1237007"
+  type        = string
+}
+
+variable "location" {
+  description = "Location of the bucket (e.g., US)"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "storage_class" {
+  description = "Storage class of the bucket (e.g., STANDARD)"
+  type        = string
+  default     = "STANDARD"
+}
