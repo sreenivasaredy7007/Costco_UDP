@@ -5,4 +5,4 @@ storage_class = "STANDARD"
 #dataset_id = "my_dataset"
 #table_id = "my_table"
 
-force_destroy = true
+#force_destroy = true
