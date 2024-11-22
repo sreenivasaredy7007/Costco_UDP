@@ -8,14 +8,6 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
         
-  # Step 2: Set up Google Cloud authentication
-  # - name: 'gcr.io/cloud-builders/gcloud'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       gcloud config set project ${_PROJECT_ID}
-  #       gcloud auth application-default login
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -45,10 +37,42 @@ steps:
       - '-input=false'
       - 'tfplan'
 
+  # Step 6: Render the cloud bucket template.
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        sed -i "s|\${bucket_name}|${_BUCKET_NAME}|g" /workspace/templates/bucket.tf.tpl
+        sed -i "s|\${location}|${_LOCATION}|g" /workspace/templates/bucket.tf.tpl
+        sed -i "s|\${storage_class}|${_STORAGE_CLASS}|g" /workspace/templates/bucket.tf.tpl
+        sed -i "s|\${force_destroy}|${_FORCE_DESTROY}|g" /workspace/templates/bucket.tf.tpl
+
+  # Step 7: Terraform Plan (Bucket)
+  - name: 'hashicorp/terraform:latest'
+    args:
+      - 'plan'
+      - '-var="bucket_name=${_BUCKET_NAME}"'
+      - '-var="location=${_LOCATION}"'
+      - '-var="storage_class=${_STORAGE_CLASS}"'
+      - '-var="force_destroy=${_FORCE_DESTROY}"'
+      - '-out=bucket-tfplan'
+
+  # Step 8: Terraform Apply (Bucket)
+  - name: 'hashicorp/terraform:latest'
+    args:
+      - 'apply'
+      - '-input=false'
+      - 'bucket-tfplan'
+
 substitutions:
   _PROJECT_ID: "costco-udp"
   _SERVICE_ACCOUNT_EMAIL: "648323935885-compute@developer.gserviceaccount.com"
   _TOPIC_NAME: "pubsub--topic-one"  # Add this if topic_name is a variable
+  _BUCKET_NAME: "upd-stg1237007"
+  _LOCATION: "us-central1"
+  _STORAGE_CLASS: "STANDARD"
+  _FORCE_DESTROY: "false"
 
 # Specify a valid machine type
 options:
