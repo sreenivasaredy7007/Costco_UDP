@@ -7,18 +7,25 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Set up Google Cloud authentication
+  # Step 2: Build the Docker image from the current directory (.)
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
-      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
-        
-  # Step 3: Terraform Initialization
+      - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+      - '.'  # This refers to the current directory as the build context
+
+  # Step 3: Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+
+  # Step 4: Terraform Initialization
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     args: ["init"]
     
-  # Step 4: Terraform Apply
+  # Step 5: Terraform Apply
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     args: ["apply", "-auto-approve"]
     env:
