@@ -7,6 +7,18 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
+  options:
+logging: "NONE"
+        
+#   # Disabled Bucket Logs.
+#   - name: gcr.io/cloud-builders/terraform
+#     args: ["apply", "-auto-approve"]
+
+# options:
+#   logging: "CLOUD_LOGGING_ONLY"
+# serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
+
+
   # Step 2: Terraform Actions.      
   - name: gcr.io/cloud-builders/terraform
     args: ["init"]
