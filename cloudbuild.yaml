@@ -1,4 +1,13 @@
 steps:
+  # Step 1: Download the service account key from GCS
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
+
+  # Step 2: Terraform Actions.      
   - name: gcr.io/cloud-builders/terraform
     args: ["init"]
   - name: gcr.io/cloud-builders/terraform
