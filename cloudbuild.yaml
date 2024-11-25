@@ -6,21 +6,13 @@ steps:
       - '-c'
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
-
-  # # Step 2: Set up Google Cloud authentication
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   args:
-  #     - 'build'
-  #     - '-t'
-  #     - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
-  #     - '.'
         
-  # Step 3: Terraform Initialization
-  - name: gcr.io/cloud-builders/terraform
+  # Step 2: Terraform Initialization
+  - name: 'us-central1-docker.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/terraform:latest'
     args: ["init"]
     
-  # Step 4: Terraform Apply
-  - name: gcr.io/cloud-builders/terraform
+  # Step 3: Terraform Apply
+  - name: 'us-central1-docker.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/terraform:latest'
     args: ["apply", "-auto-approve"]
     env:
       - "TF_VAR_project_id=$_PROJECT_ID"
