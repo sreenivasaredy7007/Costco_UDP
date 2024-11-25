@@ -7,13 +7,13 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Build the Docker image from the current directory (.)
+  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-      - '.'  # This refers to the current directory as the build context
+      - '.'  # Ensure this points to the directory containing the Dockerfile
 
   # Step 3: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
