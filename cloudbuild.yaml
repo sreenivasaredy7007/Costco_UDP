@@ -25,6 +25,10 @@ steps:
         terraform apply -auto-approve
     dir: "/workspace"
 
+# Logging options
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 # Specify substitutions and service account
 substitutions:
   _PROJECT_ID: "costco-udp"
@@ -36,11 +40,6 @@ serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
 # Include all files in the workspace for the build context
 artifacts:
   objects:
-    location: gs://<YOUR-BUCKET-NAME>/artifacts/
+    location: gs://service_for_all/artifacts/
     paths:
       - '**'
-
-substitutions:
-  _PROJECT_ID: "costco-udp"
-  _REGION: "us-central1"
-  _BUCKET_NAME: "gs://service_for_all/"
