@@ -3,20 +3,12 @@ variable "project_id" {
   type        = string
 }
 
-variable "topic_name" {
-  description = "Pub/Sub topic name"
+variable "region" {
+  description = "Google Cloud region"
   type        = string
-  default     = "my-topic"
 }
 
-variable "subscription_name" {
-  description = "Pub/Sub subscription name"
+variable "bucket_name" {
+  description = "Bucket name for Terraform backend and Dataflow"
   type        = string
-  default     = "my-subscription"
-}
-
-variable "service_account_email" {
-  description = "Service account email for authentication"
-  type        = string
-  default     = ""  # You can set a default or pass it during apply
 }
