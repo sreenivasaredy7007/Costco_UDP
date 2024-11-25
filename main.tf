@@ -41,8 +41,30 @@ module "bigquery" {
   table_id   = "sample_table"
 }
 
+#module "composer" {
+#  source = "./modules/composer"
+#  name   = "example-composer"
+#  region = var.region
+#}
+
 module "composer" {
-  source = "./modules/composer"
-  name   = "example-composer"
-  region = var.region
+  source           = "./composer"
+  environment_name = "sample-composer-env"
+  region           = "us-central1"
+  zone             = "us-central1-a"
+  node_count       = 3
+  machine_type     = "n1-standard-2"
+  image_version    = "composer-2.0.32-airflow-2.6.3"
+  python_version   = "3"
+  network          = "default"
+  subnetwork       = "default-subnet"
+  service_account  = "composer-service-account@your-project-id.iam.gserviceaccount.com"
+  pypi_packages    = {
+    "pandas" = "1.3.3"
+    "numpy"  = "1.21.2"
+  }
+}
+
+output "composer_config" {
+  value = module.composer.composer_configuration
 }
