@@ -1,5 +1,5 @@
 steps:
-  # Step 1: Download the service account key from GCS
+  # Step 1: Download the service account key
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
@@ -7,36 +7,38 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Build the Docker image
+  # Step 2: Build Docker image with the context
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-      - '.'  # Ensure this points to the directory containing the Dockerfile
+      - '.'
 
-  # Step 3: Push the Docker image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
+  # Step 3: Run Terraform commands in the container
+  - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+    entrypoint: '/bin/bash'
     args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+      - '-c'
+      - |
+        terraform init &&
+        terraform apply -auto-approve
+    dir: "/workspace"
 
-  # Step 4: Terraform Initialization
-  - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-    args: ["init"]
-    
-  # Step 5: Terraform Apply
-  - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-    args: ["apply", "-auto-approve"]
-    env:
-      - "TF_VAR_project_id=$_PROJECT_ID"
-      - "TF_VAR_region=$_REGION"
-      - "TF_VAR_bucket_name=$_BUCKET_NAME"
-
-options:
-  logging: "CLOUD_LOGGING_ONLY"
+# Specify substitutions and service account
+substitutions:
+  _PROJECT_ID: "costco-udp"
+  _REGION: "us-central1"
+  _BUCKET_NAME: "service_for_all"
 
 serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
+
+# Include all files in the workspace for the build context
+artifacts:
+  objects:
+    location: gs://<YOUR-BUCKET-NAME>/artifacts/
+    paths:
+      - '**'
 
 substitutions:
   _PROJECT_ID: "costco-udp"
