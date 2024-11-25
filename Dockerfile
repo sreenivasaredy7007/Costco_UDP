@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-# Install necessary dependencies
-RUN apk add --no-cache curl unzip bash
+# Install necessary dependencies to run Terraform
+RUN apk add --no-cache bash curl unzip
 
 # Install Terraform
 RUN curl -fsSL https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip -o terraform.zip \
