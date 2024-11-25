@@ -7,13 +7,13 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Set up Google Cloud authentication
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
-      - '.'
+  # # Step 2: Set up Google Cloud authentication
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args:
+  #     - 'build'
+  #     - '-t'
+  #     - 'us-central1-docker.pkg.dev/costco-udp/costo-udp/costo-udp-image:latest'
+  #     - '.'
         
   # Step 3: Terraform Initialization
   - name: gcr.io/cloud-builders/terraform
