@@ -4,11 +4,11 @@ variable "project_id" {
 }
 
 variable "region" {
-  description = ""
+  description = "us-central1"
   type        = string
 }
 
 variable "bucket_name" {
-  description = "Bucket name for Terraform backend and Dataflow"
+  description = "gs://service_for_all/"
   type        = string
 }
