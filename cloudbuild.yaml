@@ -7,18 +7,11 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
         
-  # Disabled Bucket Logs.
-  - name: gcr.io/cloud-builders/terraform
-    args: ["apply", "-auto-approve"]
-
-options:
-  logging: "CLOUD_LOGGING_ONLY"
-serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
-
-
-  # Step 2: Terraform Actions.      
+  # Step 2: Terraform Initialization
   - name: gcr.io/cloud-builders/terraform
     args: ["init"]
+    
+  # Step 3: Terraform Apply
   - name: gcr.io/cloud-builders/terraform
     args: ["apply", "-auto-approve"]
     env:
@@ -26,7 +19,13 @@ serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
       - "TF_VAR_region=$REGION"
       - "TF_VAR_bucket_name=$BUCKET_NAME"
 
+options:
+  logging: "CLOUD_LOGGING_ONLY"
+
+serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
+
 substitutions:
   _PROJECT_ID: "costco-udp"
   _REGION: "us-central1"
   _BUCKET_NAME: "gs://service_for_all/"
+
