@@ -26,6 +26,6 @@ serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
 
 substitutions:
   _PROJECT_ID: "costco-udp"
-  _REGION: "us-central1"
+  _REGION: "us"
   _BUCKET_NAME: "gs://service_for_all/"
 
