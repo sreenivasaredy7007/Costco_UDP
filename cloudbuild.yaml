@@ -91,7 +91,7 @@ steps:
         echo "Cleaning workspace directory..." &&
         rm -rf /workspace/* &&
         echo "Cloning Terraform configuration files..." &&
-        git clone https://github.com/your-repo/terraform-configs.git /workspace
+        git clone https://github.com/sreenivasaredy7007/Costco_UDP.git /workspace
 
   # Step 3: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
