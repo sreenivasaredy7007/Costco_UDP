@@ -7,7 +7,7 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Build Docker image with the context
+  # Step 2: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -15,21 +15,21 @@ steps:
       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
       - '.'
 
-  # Step 3: Run Terraform commands in the container
+  # Step 3: Run Terraform
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     entrypoint: '/bin/bash'
     args:
       - '-c'
       - |
+        tree /workspace &&
         terraform init &&
+        terraform validate &&
         terraform apply -auto-approve
     dir: "/workspace"
 
-# Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
 
-# Specify substitutions and service account
 substitutions:
   _PROJECT_ID: "costco-udp"
   _REGION: "us-central1"
@@ -37,7 +37,6 @@ substitutions:
 
 serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
 
-# Include all files in the workspace for the build context
 artifacts:
   objects:
     location: gs://service_for_all/artifacts/
