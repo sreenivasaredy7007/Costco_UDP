@@ -9,6 +9,7 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  description = "service_for_all"
+  description = "GCS bucket for Terraform state"
   type        = string
+  default     = "service_for_all" # Optionally set a default value
 }
