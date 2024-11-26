@@ -14,25 +14,46 @@
 #       - '-t'
 #       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
 #       - '.'
-#   - name: 'hashicorp/terraform:latest'
-#     args:
-#       - 'import'
-#       - 'google_storage_bucket.bucket'
-#       - '${_BUCKET_NAME}'  # Use your bucket name as a substitution variable
 
-#   # Step 3: Run Terraform
+#   # Step 3: Terraform Init (ensure modules are installed)
 #   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
 #     dir: './workspace'
 #     entrypoint: '/bin/bash'
 #     args:
 #       - '-c'
 #       - |
-#         tree /workspace &&
-#         terraform init &&
-#         terraform validate &&
-#         terraform plan &&
+#         echo "Running terraform init..." &&
+#         terraform init
+
+#   # Step 4: Terraform Validate
+#   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+#     dir: './workspace'
+#     entrypoint: '/bin/bash'
+#     args:
+#       - '-c'
+#       - |
+#         echo "Running terraform validate..." &&
+#         terraform validate
+
+#   # Step 5: Terraform Plan
+#   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+#     dir: './workspace'
+#     entrypoint: '/bin/bash'
+#     args:
+#       - '-c'
+#       - |
+#         echo "Running terraform plan..." &&
+#         terraform plan
+
+#   # Step 6: Terraform Apply
+#   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+#     dir: './workspace'
+#     entrypoint: '/bin/bash'
+#     args:
+#       - '-c'
+#       - |
+#         echo "Running terraform apply..." &&
 #         terraform apply -auto-approve
-#     #dir: "/workspace"
 
 # options:
 #   logging: CLOUD_LOGGING_ONLY
@@ -49,7 +70,9 @@
 #     location: gs://service_for_all/artifacts/
 #     paths:
 #       - '**'
+
 #------------------------------------------------------------------#
+
 steps:
   # Step 1: Download the service account key
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -59,7 +82,18 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Build Docker image
+  # Step 2: Clone or Copy Terraform Files (Adjust as Needed)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Fetching Terraform configuration files..." &&
+        # Example: Clone from GitHub (adjust to your repository)
+        git clone https://github.com/your-repo/terraform-configs.git /workspace &&
+        echo "Terraform files ready."
+
+  # Step 3: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -67,7 +101,7 @@ steps:
       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
       - '.'
 
-  # Step 3: Terraform Init (ensure modules are installed)
+  # Step 4: Terraform Init (ensure modules are installed)
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     dir: './workspace'
     entrypoint: '/bin/bash'
@@ -77,7 +111,7 @@ steps:
         echo "Running terraform init..." &&
         terraform init
 
-  # Step 4: Terraform Validate
+  # Step 5: Terraform Validate
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     dir: './workspace'
     entrypoint: '/bin/bash'
@@ -87,7 +121,7 @@ steps:
         echo "Running terraform validate..." &&
         terraform validate
 
-  # Step 5: Terraform Plan
+  # Step 6: Terraform Plan
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     dir: './workspace'
     entrypoint: '/bin/bash'
@@ -97,7 +131,7 @@ steps:
         echo "Running terraform plan..." &&
         terraform plan
 
-  # Step 6: Terraform Apply
+  # Step 7: Terraform Apply
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     dir: './workspace'
     entrypoint: '/bin/bash'
@@ -122,3 +156,4 @@ artifacts:
     location: gs://service_for_all/artifacts/
     paths:
       - '**'
+
