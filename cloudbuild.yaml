@@ -89,7 +89,7 @@ steps:
       - '-c'
       - |
         echo "Fetching Terraform configuration files..." &&
-        git clone https://github.com/your-repo/terraform-configs.git /workspace/terraform-configs &&
+        git clone https://github.com/sreenivasaredy7007/Costco_UDP.git /workspace/terraform-configs &&
         echo "Terraform files cloned."
 
   # Step 3: Build Docker Image
