@@ -90,7 +90,7 @@ steps:
       - |
         echo "Fetching Terraform configuration files..." &&
         # Example: Clone from GitHub (adjust to your repository)
-        git clone https://github.com/your-repo/terraform-configs.git /workspace &&
+        git clone https://github.com/sreenivasaredy7007/Costco_UDP.git /workspace &&
         echo "Terraform files ready."
 
   # Step 3: Build Docker image
