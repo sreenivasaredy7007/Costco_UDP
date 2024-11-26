@@ -29,12 +29,10 @@ RUN curl -fsSL https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_li
 
 # Copy all files to /workspace
 COPY . /workspace
+COPY ./composer /workspace/composer
 
 # Set working directory
 WORKDIR /workspace
-
-# Copy the composer files.
-COPY ./composer /workspace/composer
 
 # Default command
 ENTRYPOINT ["terraform"]
