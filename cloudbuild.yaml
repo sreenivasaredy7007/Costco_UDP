@@ -1,3 +1,55 @@
+# steps:
+#   # Step 1: Download the service account key
+#   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
+
+#   # Step 2: Build Docker image
+#   - name: 'gcr.io/cloud-builders/docker'
+#     args:
+#       - 'build'
+#       - '-t'
+#       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+#       - '.'
+#   - name: 'hashicorp/terraform:latest'
+#     args:
+#       - 'import'
+#       - 'google_storage_bucket.bucket'
+#       - '${_BUCKET_NAME}'  # Use your bucket name as a substitution variable
+
+#   # Step 3: Run Terraform
+#   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+#     dir: './workspace'
+#     entrypoint: '/bin/bash'
+#     args:
+#       - '-c'
+#       - |
+#         tree /workspace &&
+#         terraform init &&
+#         terraform validate &&
+#         terraform plan &&
+#         terraform apply -auto-approve
+#     #dir: "/workspace"
+
+# options:
+#   logging: CLOUD_LOGGING_ONLY
+
+# substitutions:
+#   _PROJECT_ID: "costco-udp"
+#   _REGION: "us-central1"
+#   _BUCKET_NAME: "service_for_all"
+
+# serviceAccount: "648323935885-compute@developer.gserviceaccount.com"
+
+# artifacts:
+#   objects:
+#     location: gs://service_for_all/artifacts/
+#     paths:
+#       - '**'
+#------------------------------------------------------------------#
 steps:
   # Step 1: Download the service account key
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -14,25 +66,46 @@ steps:
       - '-t'
       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
       - '.'
-  - name: 'hashicorp/terraform:latest'
-    args:
-      - 'import'
-      - 'google_storage_bucket.bucket'
-      - '${_BUCKET_NAME}'  # Use your bucket name as a substitution variable
 
-  # Step 3: Run Terraform
+  # Step 3: Terraform Init (ensure modules are installed)
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
     dir: './workspace'
     entrypoint: '/bin/bash'
     args:
       - '-c'
       - |
-        tree /workspace &&
-        terraform init &&
-        terraform validate &&
-        terraform plan &&
+        echo "Running terraform init..." &&
+        terraform init
+
+  # Step 4: Terraform Validate
+  - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+    dir: './workspace'
+    entrypoint: '/bin/bash'
+    args:
+      - '-c'
+      - |
+        echo "Running terraform validate..." &&
+        terraform validate
+
+  # Step 5: Terraform Plan
+  - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+    dir: './workspace'
+    entrypoint: '/bin/bash'
+    args:
+      - '-c'
+      - |
+        echo "Running terraform plan..." &&
+        terraform plan
+
+  # Step 6: Terraform Apply
+  - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
+    dir: './workspace'
+    entrypoint: '/bin/bash'
+    args:
+      - '-c'
+      - |
+        echo "Running terraform apply..." &&
         terraform apply -auto-approve
-    #dir: "/workspace"
 
 options:
   logging: CLOUD_LOGGING_ONLY
