@@ -48,7 +48,7 @@ module "bigquery" {
 #}
 
 module "composer" {
-  source           = "./composer"
+  source           = "./modules/composer"
   environment_name = "sample-composer-env"
   region           = "us-central1"
   zone             = "us-central1-a"
