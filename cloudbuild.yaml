@@ -82,18 +82,17 @@ steps:
       - |
         gsutil cp gs://costco-upd-json-key/costco-udp-dac031daa2fc.json /workspace/key.json
 
-  # Step 2: Prepare /workspace directory
+  # Step 2: Clone Terraform Files into a Subdirectory
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        echo "Cleaning workspace directory..." &&
-        rm -rf /workspace/* &&
-        echo "Cloning Terraform configuration files..." &&
-        git clone https://github.com/sreenivasaredy7007/Costco_UDP.git /workspace
+        echo "Fetching Terraform configuration files..." &&
+        git clone https://github.com/your-repo/terraform-configs.git /workspace/terraform-configs &&
+        echo "Terraform files cloned."
 
-  # Step 3: Build Docker image
+  # Step 3: Build Docker Image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -103,7 +102,7 @@ steps:
 
   # Step 4: Terraform Init
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-    dir: './workspace'
+    dir: './terraform-configs'
     entrypoint: '/bin/bash'
     args:
       - '-c'
@@ -113,7 +112,7 @@ steps:
 
   # Step 5: Terraform Validate
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-    dir: './workspace'
+    dir: './terraform-configs'
     entrypoint: '/bin/bash'
     args:
       - '-c'
@@ -123,7 +122,7 @@ steps:
 
   # Step 6: Terraform Plan
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-    dir: './workspace'
+    dir: './terraform-configs'
     entrypoint: '/bin/bash'
     args:
       - '-c'
@@ -133,7 +132,7 @@ steps:
 
   # Step 7: Terraform Apply
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
-    dir: './workspace'
+    dir: './terraform-configs'
     entrypoint: '/bin/bash'
     args:
       - '-c'
@@ -156,3 +155,4 @@ artifacts:
     location: gs://service_for_all/artifacts/
     paths:
       - '**'
+
