@@ -9,6 +9,6 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  description = "gs://service_for_all/"
+  description = "service_for_all"
   type        = string
 }
