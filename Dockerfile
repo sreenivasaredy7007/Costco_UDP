@@ -33,6 +33,9 @@ COPY . /workspace
 # Set working directory
 WORKDIR /workspace
 
+# Copy the composer files.
+COPY ./composer /workspace/composer
+
 # Default command
 ENTRYPOINT ["terraform"]
 CMD ["--help"]
