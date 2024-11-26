@@ -15,11 +15,10 @@ steps:
       - 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
       - '.'
   - name: 'hashicorp/terraform:latest'
-  args:
-    - 'import'
-    - 'google_storage_bucket.bucket'
-    - '${_BUCKET_NAME}'  # Use your bucket name as a substitution variable
-
+    args:
+      - 'import'
+      - 'google_storage_bucket.bucket'
+      - '${_BUCKET_NAME}'  # Use your bucket name as a substitution variable
 
   # Step 3: Run Terraform
   - name: 'us-central1-docker.pkg.dev/costco-udp/terraform-images/terraform:latest'
