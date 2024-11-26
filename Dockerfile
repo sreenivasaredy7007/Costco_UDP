@@ -49,10 +49,10 @@ RUN curl -fsSL https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_li
     && rm terraform.zip
 
 # Copy all files to /workspace
-COPY . /workspace
+COPY . /workspace/terraform-config
 
 # Set working directory
-WORKDIR /workspace
+WORKDIR /workspace/terraform-config
 
 # Allow flexibility in the container
 RUN apk add --no-cache tree
