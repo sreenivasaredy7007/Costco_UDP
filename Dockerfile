@@ -41,15 +41,12 @@
 FROM alpine:latest 
 
 # Install necessary dependencies
-RUN apk add --no-cache bash curl unzip
+RUN apk add --no-cache bash curl unzip git
 
 # Install Terraform
 RUN curl -fsSL https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip -o terraform.zip \
     && unzip terraform.zip -d /usr/bin \
     && rm terraform.zip
-
-# Copy all files to /workspace
-COPY . /workspace/terraform-config
 
 # Set working directory
 WORKDIR /workspace/terraform-config
@@ -57,7 +54,7 @@ WORKDIR /workspace/terraform-config
 # Allow flexibility in the container
 RUN apk add --no-cache tree
 
-# Default command (use /bin/bash for debugging or Terraform by default)
+# Default command
 ENTRYPOINT ["/bin/bash"]
 CMD ["-c", "terraform --help"]
 
