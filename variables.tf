@@ -1,15 +1,15 @@
 variable "project_id" {
-  description = "Google Cloud project ID"
+  description = "costco-project-441414"
   type        = string
 }
 
 variable "topic_name" {
-  description = "Name of the Pub/Sub topic"
+  description = "udp-tt-topic-test"
   type        = string
 }
 
 variable "subscription_name" {
-  description = "Name of the Pub/Sub subscription"
+  description = "udp-tt-topic-subscription"
   type        = string
 }
 
