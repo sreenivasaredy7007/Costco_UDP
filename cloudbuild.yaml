@@ -80,7 +80,7 @@ substitutions:
 
 substitutions:
   _PROJECT_ID: "costco-project-441414"
-  _SERVICE_ACCOUNT: "your-service-account@your-project.iam.gserviceaccount.com"
+  _SERVICE_ACCOUNT: "costco-udp-poc-sac-gcc@costco-project-441414.iam.gserviceaccount.com"
   _TOPIC_NAME: "udp-tt-topic-test"
   _SUBSCRIPTION_NAME: "udp-tt-topic-subscription"
 
