@@ -81,8 +81,8 @@ substitutions:
 substitutions:
   _PROJECT_ID: "costco-project-441414"
   _SERVICE_ACCOUNT: "your-service-account@your-project.iam.gserviceaccount.com"
-  _TOPIC_NAME: "your-topic-name"
-  _SUBSCRIPTION_NAME: "your-subscription-name"
+  _TOPIC_NAME: "udp-tt-topic-test"
+  _SUBSCRIPTION_NAME: "udp-tt-topic-subscription"
 
 # Secrets to securely pass the Service Account key (stored in Secret Manager)
 availableSecrets:
@@ -90,11 +90,11 @@ availableSecrets:
     - versionName: "projects/your-project-id/secrets/your-secret-name/versions/latest"
       env: "GOOGLE_CREDENTIALS"
 
-options:
-  logging: CLOUD_LOGGING_ONLY
-"
-  _TOPIC_NAME: "your-topic-name"
-  _SUBSCRIPTION_NAME: "your-subscription-name"
+# options:
+#   logging: CLOUD_LOGGING_ONLY
+# "
+#   _TOPIC_NAME: "your-topic-name"
+#   _SUBSCRIPTION_NAME: "your-subscription-name"
 
 # Secrets to securely pass the Service Account key (stored in Secret Manager)
 availableSecrets:
