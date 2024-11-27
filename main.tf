@@ -3,55 +3,33 @@ provider "google" {
   region  = "us-central1"
 }
 
-# Render the topic template
+# Render the Pub/Sub topic template
 data "template_file" "pubsub_topic" {
-  template = file("${path.module}/templates/topic.tf.tpl")
+  template = file("${path.module}/templates/pubsub_topic.tpl")
 
   vars = {
-    project_id = var.project_id
     topic_name = var.topic_name
+    project_id = var.project_id
   }
 }
 
-# Render the subscription template
+# Render the Pub/Sub subscription template
 data "template_file" "pubsub_subscription" {
-  template = file("${path.module}/templates/subscription.tf.tpl")
+  template = file("${path.module}/templates/pubsub_subscription.tpl")
 
   vars = {
-    project_id        = var.project_id
-    subscription_name = var.subscription_name
+    subscription_name  = var.subscription_name
+    topic_name         = var.topic_name
+    ack_deadline_seconds = var.ack_deadline_seconds
   }
 }
 
-# Output the rendered templates for verification (optional)
-output "rendered_topic" {
-  value = data.template_file.pubsub_topic.rendered
-}
-
-output "rendered_subscription" {
-  value = data.template_file.pubsub_subscription.rendered
-}
-
-# Include resources using Terraform's `resource` blocks for actual deployment
-#resource "google_pubsub_topic" "topic" {
-#  name    = var.topic_name
-#  project = var.project_id
-#}
-
-resource "google_pubsub_topic" "topic" {
-  name = var.topic_name
-  project = var.project_id
-
-  lifecycle {
-    prevent_destroy = true  # Prevents accidental deletion
-    ignore_changes = [name]  # Ignores changes if the resource already exists
+# Evaluate the templates using local-exec
+resource "null_resource" "apply_templates" {
+  provisioner "local-exec" {
+    command = <<EOT
+echo '${data.template_file.pubsub_topic.rendered}' > generated_pubsub_topic.tf
+echo '${data.template_file.pubsub_subscription.rendered}' > generated_pubsub_subscription.tf
+EOT
   }
-}
-
-
-resource "google_pubsub_subscription" "subscription" {
-  name                 = var.subscription_name
-  topic                = google_pubsub_topic.topic.id
-  project              = var.project_id
-  ack_deadline_seconds = 10
 }
