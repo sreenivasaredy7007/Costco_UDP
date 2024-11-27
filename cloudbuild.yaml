@@ -1,0 +1,106 @@
+steps:
+  # Step 1: Authenticate with Google Cloud using a Service Account Key
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo $GOOGLE_CREDENTIALS > /workspace/account.json &&
+        gcloud auth activate-service-account --key-file=/workspace/account.json &&
+        gcloud config set project $_PROJECT_ID
+
+  # Step 2: Grant Permissions to the Service Account (if needed)
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud projects add-iam-policy-binding $_PROJECT_ID \
+          --member="serviceAccount:${_SERVICE_ACCOUNT}" \
+          --role="roles/pubsub.editor"
+
+  # Step 3: Install Terraform
+  - name: hashicorp/terraform:1.5.0
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform init &&
+        terraform validate
+
+  # Step 4: Apply Terraform Configuration
+  - name: hashicorp/terraform:1.5.0
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform plan -out=tfplan &&
+        terraform apply -input=false -auto-approve tfplan
+
+substitutions:
+  _PROJECT_ID: "your-google-cloud-project-id"
+  _SERVICE_ACCOUNT: "steps:
+  # Step 1: Authenticate with Google Cloud using a Service Account Key
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo $GOOGLE_CREDENTIALS > /workspace/account.json &&
+        gcloud auth activate-service-account --key-file=/workspace/account.json &&
+        gcloud config set project $_PROJECT_ID
+
+  # Step 2: Grant Permissions to the Service Account (if needed)
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud projects add-iam-policy-binding $_PROJECT_ID \
+          --member="serviceAccount:${_SERVICE_ACCOUNT}" \
+          --role="roles/pubsub.editor"
+
+  # Step 3: Install Terraform
+  - name: hashicorp/terraform:1.5.0
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform init &&
+        terraform validate
+
+  # Step 4: Apply Terraform Configuration
+  - name: hashicorp/terraform:1.5.0
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform plan -out=tfplan &&
+        terraform apply -input=false -auto-approve tfplan
+
+substitutions:
+  _PROJECT_ID: "costco-project-441414"
+  _SERVICE_ACCOUNT: "your-service-account@your-project.iam.gserviceaccount.com"
+  _TOPIC_NAME: "your-topic-name"
+  _SUBSCRIPTION_NAME: "your-subscription-name"
+
+# Secrets to securely pass the Service Account key (stored in Secret Manager)
+availableSecrets:
+  secretManager:
+    - versionName: "projects/your-project-id/secrets/your-secret-name/versions/latest"
+      env: "GOOGLE_CREDENTIALS"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+"
+  _TOPIC_NAME: "your-topic-name"
+  _SUBSCRIPTION_NAME: "your-subscription-name"
+
+# Secrets to securely pass the Service Account key (stored in Secret Manager)
+availableSecrets:
+  secretManager:
+    - versionName: "projects/your-project-id/secrets/your-secret-name/versions/latest"
+      env: "GOOGLE_CREDENTIALS"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
