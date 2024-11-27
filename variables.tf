@@ -4,19 +4,17 @@ variable "project_id" {
 }
 
 variable "topic_name" {
-  description = "Pub/Sub topic name"
+  description = "Name of the Pub/Sub topic"
   type        = string
-  default     = "my-topic"
 }
 
 variable "subscription_name" {
-  description = "Pub/Sub subscription name"
+  description = "Name of the Pub/Sub subscription"
   type        = string
-  default     = "my-subscription"
 }
 
-variable "service_account_email" {
-  description = "Service account email for authentication"
-  type        = string
-  default     = ""  # You can set a default or pass it during apply
+variable "ack_deadline_seconds" {
+  description = "Ack deadline in seconds for the subscription"
+  type        = number
+  default     = 10
 }
