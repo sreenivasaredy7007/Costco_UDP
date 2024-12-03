@@ -1,10 +1,10 @@
 provider "google" {
-  project = var.gcp_project
+  project = "costco-udp"
   region  = "us-central1"
 }
 
 resource "google_storage_bucket" "example_bucket" {
-  name          = var.bucket_name
+  name          = "my-things-create"
   location      = "US"
-  force_destroy = true
+  storage_class = "STANDARD"
 }
