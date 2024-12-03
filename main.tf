@@ -11,7 +11,7 @@ resource "google_storage_bucket" "example_bucket" {
 
 # Simulate a folder by creating a placeholder object
 resource "google_storage_bucket_object" "folder" {
-  name   = "my-bucket-folder/"  # The trailing slash is important to simulate a folder
+  name   = "my-bucket-folder/"  # The trailing slash is important to simulate a folder.
   bucket = google_storage_bucket.bucket.name
-  content = ""           # Empty content to act as a placeholder
+  content = ""           # Empty content to act as a placeholder.
 }
