@@ -27,7 +27,7 @@ jobs:
           create_credentials_file: true
           workload_identity_provider: "projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
           service_account: "github-oidc-pool-udp@costco-udp.iam.gserviceaccount.com"
-          audience: "//iam.googleapis.com/projects/428459992040/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
+          audience: "//iam.googleapis.com/projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
           debug_log: true
 
       - name: "Setup Terraform"
