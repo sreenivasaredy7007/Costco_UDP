@@ -2,8 +2,7 @@ name: Deploy Terraform to Create GCS Bucket
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   id-token: write
