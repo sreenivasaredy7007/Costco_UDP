@@ -23,7 +23,7 @@ jobs:
         with:
           workload_identity_provider: "projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
           service_account: "github-pool-udp-01@costco-project-441414.iam.gserviceaccount.com"
-          audience: "//iam.googleapis.com/projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
+          #audience: "//iam.googleapis.com/projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
           debug_log: true
 
       - name: "Test Authentication"
