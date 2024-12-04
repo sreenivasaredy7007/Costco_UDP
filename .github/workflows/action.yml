@@ -27,16 +27,16 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           project_id: 'costco-udp'
-          cleanup_credentials: true
+          #cleanup_credentials: true
           workload_identity_provider: "projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
           service_account: "github-pool-udp-01@costco-project-441414.iam.gserviceaccount.com"
           #audience: "//iam.googleapis.com/projects/648323935885/locations/global/workloadIdentityPools/github-actions-pool-udp/providers/github-actions-pool-udp"
           debug_log: true
 
-      - name: "Test Authentication"
-        run: |
-          gcloud auth list
-          gcloud projects list
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          version: '>= 363.0.0'
 
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v2
