@@ -18,6 +18,11 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4
 
+      - name: "Test Authentication (using pre-existing credentials)"
+        run: |
+          gcloud auth list  # Check for existing credentials
+          gcloud projects list  # Test if credentials can access projects
+
       - name: "Authenticate to Google Cloud"
         uses: google-github-actions/auth@v2
         with:
